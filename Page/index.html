@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+		<title>MGDRivE Graph Tool</title>
+		<link rel="shortcut icon" href="../favicon.ico">
+		<link rel="stylesheet" type="text/css" href="css/demo.css" />
+		<link rel="stylesheet" type="text/css" href="css/component2.css" />
+		<script src="js/modernizr.custom.js"></script>
+	</head>
+	<body>
+		<div class="container">
+			<div id="splitlayout" class="splitlayout">
+				<div class="intro">
+					<div class="side side-left">
+						<header class="codropsheader clearfix">
+							<span>MGDRivE Graph Tool</span>
+						</header>
+						<div class="intro-content">
+							<h1><span>MGDriVE</span></h1>
+						</div>
+						<div class="overlay"></div>
+					</div>
+					<div class="side side-right">
+						<div class="intro-content">
+							<h1 style="color:#130000;"><span>Graph Tool</span></h1>
+						</div>
+						<div class="overlay"></div>
+					</div>
+				</div><!-- /intro -->
+				<div class="page page-right">
+					<div class="page-inner"> 
+						<section>
+							<h2>MGDrivE Graph Tool</h2>
+                            <p><a href="https://github.com/Salomon21/MGDrivE_Graph_Tool" style="color: #2E87F4">MGDrivE Graph Tool</a> es un software desarrollado en Python por Salomón Olivera Abud que permite al usuario a través de una interfaz gráfica automatizar el proceso de la generación de las representaciones gráficas de las simulaciones obtenidas por MGDrivE. </p>
+                            <p>Para que esta herramienta genere los gráficos es necesario que el usuario ingrese 2 tipos de CSV diferentes, el <strong>primero</strong> es el conjunto de archivos CSV que representan toda la simulación, cada uno de esos CSV se verá representado como un nodo. El <strong>segundo</strong> es un solo archivo CSV el cual sirve para posicionar cada nodo de manera geográfica en la gráfica.</p>
+						</section>
+						<section>
+							<h2>Componentes</h2>
+							<p>Este software produce un archivo .html en el cual se puede observar la animación resultado de los archivos de salida producidos por MGDrivE, entre estos componentes se encuentran:</p>
+                            <ul>
+                                <li>Nodos o gráficas de pastel.</li> 
+                                <li>Tabla.</li> 
+                                <li>Gráfica de población en el tiempo.</li> 
+                                <li>Deslizador de tiempo.</li> 
+                            </ul>
+						</section>
+						<section>
+							<h2>Nodos</h2>
+							<p>Los nodos o gráficas de pastel son la representación de cada CSV del primer conjunto de datos ingresados por el usuario, estos son acomodados en la gráfica gracias a las coordenadas dadas por otro CSV el cuál es el segundo dado por el usuario.</p>
+                            <p>Cada nodo representa una población liberada y en la cuál se puede ver como los genotipos van cambiando a través del tiempo, además de que el usuario puede pasar el ratón sobre cada nodo y ver el porcentaje de genotipo, tal y como se muestra en la siguiente imagen: </p>
+							<img src="img/Nodo.png">
+						</section>
+						<section>
+							<h2>Tabla</h2>
+							<p>En la tabla se muestran todos los genotipos de la simulación y el valor actual de la población en ese instante de tiempo que cuenta con este genotipo, en el resultado final se puede apreciar la tabla de la siguiente forma:</p>
+							<img src="img/Tabla.PNG">
+						</section>
+						<section>
+							<h2>Gráfica de población en el tiempo</h2>
+							<p>La gráfica de población en el tiempo o scatter en inglés nos muestra la suma total de población en el transcurso de la simulación, el usuario puede pasar el ratón sobre cada punto para ver la cantidad exacta y en que instante de tiempo se dio, también puede matener el clic aplastado y marcar un cuadro para hacer zoom o con las herramientas de la parte superior derecha restablecer el zoom.</p>
+							<img src="img/Scatter.jpg">
+						</section>
+                        <section>
+                            <h2>Deslizador de tiempo</h2>
+                            <p>Este componente cuenta de 2 partes, la primera son 2 botones llamados <strong>Play</strong> y <strong>Pause</strong> los cuales sirven para reproducir la animación y pausar la animación respectivamente. La otra parte es un set de puntos en el tiempo en el cuál el usuario puede posicionarse y ver los resultados de la simulación en ese momento exacto de tiempo</p>
+                            <img src="img/Tiempo.JPG" width="1000">
+                        </section>
+					</div><!-- /page-inner -->
+				</div><!-- /page-right -->
+				<div class="page page-left">
+					<div class="page-inner">
+						<section>
+							<h2>¿Qué es?</h2>
+							<p> <a href="https://chipdelmal.github.io/researchprojects/MGDrivE.html" style="color: #2E87F4">MGDrive</a> es un software enfocado al estudio del dinamismo de las poblaciones de mosquitos y el cual es útil en el estudio genético de las meta-poblaciones de mosquitos conectadas por la migración, también permite el análisis de datos y patrones en la herencia de los genes de los mosquitos, tanto de las hembras como de los machos haciendo una clara diferenciación entre estos. </p>
+                            <p>Los resultados de las simulaciones hechas en esta herramienta entregan como resultado archivos con extensión .CSV para que el usuario pueda decidir la plataforma de su agrado para graficar estos resultados.</p>
+						</section>
+						<section>
+							<h2>Genotipos</h2>
+							<p>Un <a href="https://dirae.es/palabras/genot%C3%ADpico" style="color: #2E87F4">genotipo</a> es un conjunto de los genes de un individuo, planta o animal en la cual viene incluida su composición alélica.</p>
+							<p>En <a href="https://www.biorxiv.org/content/biorxiv/early/2018/06/19/350488.full.pdf" style="color: #2E87F4">MGDrivE</a> se manejan diversos tipos de genotipos los cuales son identificados dependiendo de su inicial: </p>
+                            <ul>
+                                <li><strong>h | W</strong>: wild-type alleles.</li> 
+                                <li><strong>H</strong>: homing alleles.</li>
+                                <li><strong>R</strong>: in-frame resistant alleles.</li>
+                                <li><strong>B</strong>: costly resistant alleles.</li>
+                            </ul>  
+
+						</section>
+                        <section>
+                            <h2>Alelos</h2>
+                            <p>Un <a href="http://dle.rae.es/srv/search?m=30&w=alelo" style="color: #2E87F4">alelo</a> es cada una de las formas alternativas de un gen que ocupan el mismo lugar en los cromosomas homólogos y cuya expresión determina las características del mismo rasgo de organización, como el color de los ojos.</p>
+                        </section>
+					</div><!-- /page-inner -->
+				</div><!-- /page-left -->
+				<a href="#" class="back back-right" title="back to intro">&rarr;</a>
+				<a href="#" class="back back-left" title="back to intro">&larr;</a>
+			</div><!-- /splitlayout -->
+		</div><!-- /container -->
+		<script src="js/classie.js"></script>
+		<script src="js/cbpSplitLayout.js"></script>
+	</body>
+</html>
