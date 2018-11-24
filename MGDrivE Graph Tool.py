@@ -13,6 +13,7 @@ from tkinter import messagebox
 from tkinter import ttk
 import threading
 from threading import Thread
+import webbrowser
 
 #Function that get positions of nodes from csv
 def get_positions(file):
@@ -96,7 +97,7 @@ def get_max(tableList):
             maxValue = newVal
     
     return maxValue
-
+    
 #Function that creates all the jsons to make the graph
 def create_graph(csvList):
     
@@ -114,6 +115,8 @@ def create_graph(csvList):
     #Returns the values to fill the table
     frameTable = create_table(csvList)              
     maxScatter = get_max(frameTable)
+    
+    configF = {'showLink': False, 'scrollZoom': False, 'displayModeBar': False, 'editable': False}
     
     #Create layout
     layout1 = dict(dragmode = "zoom", clickmode = "none", title='MGDrivE', titlefont = dict(size = 40), hidesources = True, margin = dict(t=100), 
@@ -178,7 +181,8 @@ def create_graph(csvList):
         df = df[df.columns[2:]]
         labelsList = list(df)
         
-        initialFigure = go.Pie(showlegend = False,textposition="inside",labels=labelsList, values=df.iloc[2,:].values.tolist(), domain = {'x': xPositions[indexCsv], 'y': yPositions[indexCsv]})
+        namePie = "Patch " + str(indexCsv + 1)
+        initialFigure = go.Pie(showlegend = False,hoverinfo="all",name = namePie, textposition="inside",labels=labelsList, values=df.iloc[2,:].values.tolist(), domain = {'x': xPositions[indexCsv], 'y': yPositions[indexCsv]})
         figureData.append(initialFigure)
         
         #Iterate through all rows per csv
@@ -186,13 +190,12 @@ def create_graph(csvList):
             if(len(framesData) < 100):
                 framesData.append([])
             
-            namePie = "Patch " + str(indexCsv)
-            rowFigure = go.Pie(showlegend = False, hoverinfo="label+percent+name",name = namePie,textposition="inside",labels=labelsList, values=df.iloc[index,:].values.tolist(), domain = {'x': xPositions[indexCsv], 'y': yPositions[indexCsv]})
             
+            rowFigure = go.Pie(showlegend = False, hoverinfo="all",name = namePie,textposition="inside",labels=labelsList, values=df.iloc[index,:].values.tolist(), domain = {'x': xPositions[indexCsv], 'y': yPositions[indexCsv]})
             
             framesData[index].append(rowFigure)
         
-        if(indexCsv == 0):
+        if(indexCsv == 0):            
             
             framesScatter = []
             framesScatter.append(sum(frameTable[0]))
@@ -253,7 +256,7 @@ def create_graph(csvList):
     figure['layout']['sliders'] = [sliders_dict]
     
     #Plot the graph and auto open in explorer
-    plotly.offline.plot(figure, auto_open=True)
+    plotly.offline.plot(figure, config=configF, filename='MGDrivE Graph Tool.html', auto_open=True)
     
 def ask_quit():
     if messagebox.askokcancel("Salir", "¿Seguro que desea salir de la aplicación?"):
@@ -263,17 +266,22 @@ def browse_button(x):
     # Allow user to select a directory and store it in global var
     # called folder_path
     if(x == 1):
-        filenames = filedialog.askopenfilenames(filetypes = (("CSV files","*.csv"),("all files","*.*")))
+        filenames = filedialog.askopenfilenames(filetypes = [("CSV files","*.csv")])
         folder_path.set(filenames)
+        if(node_path.get() != ''):
+            continue_button_frame = Frame(root)
+            Button(continue_button_frame,text="Continuar",width=12,cursor="hand2",state=NORMAL,command=second_window).pack()
+            continue_button_frame.place(x=370,y=250)
+            
     else:
-        filename = filedialog.askopenfilename(filetypes = (("CSV files","*.csv"),("all files","*.*")))
+        filename = filedialog.askopenfilename(filetypes = [("CSV files","*.csv")])
         node_path.set(filename)
-        continue_button_frame = Frame(root)
-        Button(continue_button_frame,text="Continuar",width=12,cursor="hand2",state=NORMAL,command=second_window).pack()
-        continue_button_frame.place(x=370,y=250)
+        if(folder_path.get() != ''):
+            continue_button_frame = Frame(root)
+            Button(continue_button_frame,text="Continuar",width=12,cursor="hand2",state=NORMAL,command=second_window).pack()
+            continue_button_frame.place(x=370,y=250)
 
-def execute_code():
-    nodes = node_path.get()
+def get_csvs():
     csvLists = folder_path.get()
     
     cList = csvLists.split(',')
@@ -294,37 +302,53 @@ def execute_code():
     for gc in regexCsv:
         goodCsvs.append(gc[1:-1])
     
+    return goodCsvs
+    
+def execute_code():
+    nodes = node_path.get()
+    csvs = get_csvs()
     get_positions(nodes)
-    create_graph(goodCsvs)
+    create_graph(csvs)
         
 def second_window():
     def start():
         progress["value"] = 0
-        maxbytes = 50000
         progress["maximum"] = 50000
         read_bytes()
-        
-    root.destroy()
-    window2 = Tk()
-    window2.title("MGDrivE Graph Tool")
-    window2.geometry("600x300")
-    window2.resizable(False,False)
-    bytes = 0
-    maxbytes = 0
     
+    scriptDirectory = os.path.dirname(os.path.realpath(__file__))
     if(show_page.get() == 1):
-        print("Si")
+        scriptDirectory = scriptDirectory.replace("\\","/")
+        webbrowser.open('file://{0}/Page/index.html'.format(scriptDirectory))
+    
+    numberOfCsvs = get_csvs()
+    numberOfCsvs = len(numberOfCsvs)
+    numberNode = pd.read_csv(node_path.get(),header=None)
+    numberOfNodes = len(numberNode.index)
+    
+    if(numberOfCsvs >= numberOfNodes):
+        if(numberOfCsvs != numberOfNodes):
+            messagebox.showwarning("Alerta", "El número de nodos es menor al número de csvs ingresados, sin embargo si se puede graficar.")
+        
+        root.destroy()
+        window2 = Tk()    
+        window2.title("MGDrivE Graph Tool")
+        window2.geometry("600x300")
+        window2.resizable(False,False)
+        
+        label = Label(window2, text="Generando gráficas...")
+        label.pack(padx=10, pady=40)
+        
+        progress = ttk.Progressbar(window2, orient="horizontal",length=500, mode="determinate", takefocus=True)
+        progress.pack()
+        progress.start()
+            
+        Thread(target = execute_code).start()
+        
+        #Destroy window after certain time because you can't stop threads that are not in main thread
+        window2.after(20000, lambda: window2.destroy())
     else:
-        print("No")
-    
-    label = Label(window2, text="Generando gráficas...")
-    label.pack(padx=10, pady=40)
-    progress = ttk.Progressbar(window2, orient="horizontal",length=500, mode="determinate", takefocus=True)
-    progress.pack()
-    progress.start()
-    
-    #Thread(target = execute_code).start()
-    #progress.stop()
+        messagebox.showerror("Error", "El número de CSVs seleccionados es menor al número de posiciones.")
     
 if __name__ == "__main__":
     root = Tk()
@@ -332,13 +356,13 @@ if __name__ == "__main__":
     root.geometry("600x300")
     root.resizable(False,False)
     
-    progress = None
     folder_path = StringVar()
     node_path = StringVar()
     show_page = IntVar()
     show_page.set(1)
     xPositions = []
     yPositions = []
+    
     
     directory_frame = Frame(root,width=500,height=40)
     directory_frame.pack_propagate(0) # Stops child widgets of label_frame from resizing it
