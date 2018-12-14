@@ -3,8 +3,8 @@
 MGDrivE Graph Tool is a stand-alone application developed in Python which allows the user to automate the generation of graphic symulations using the output of the landscape module of [MGDrivE](https://chipdelmal.github.io/researchprojects/MGDrivE.html).
 
 ### Dependencies
-```
  In order to make the proyect work, install:
+```
  	* Python3
  	* pip
     	* Pandas
@@ -12,7 +12,6 @@ MGDrivE Graph Tool is a stand-alone application developed in Python which allows
 ```
 
 # Installation 
----
 After you install python you need to install its dependencies.
 ```
 	pip install pandas
@@ -20,14 +19,12 @@ After you install python you need to install its dependencies.
 ```
 
 # Run
----
 Once you have all the dependencies installed you can run the program with the following command.
 ```
     python "MGDrivE Graph Tool.py"
 ```
 
 # Demo
----
 Here you can see a demo of how the program works, you can see the informative page in the Page/index.html file too.
 Demo of [MGDrivE Graph Tool](https://www.youtube.com/watch?v=_Ex5RUrOaxw)
 
